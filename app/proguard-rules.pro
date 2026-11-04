@@ -1,0 +1,4 @@
+-keep class com.kl.logger.** { *; }
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-dontwarn **

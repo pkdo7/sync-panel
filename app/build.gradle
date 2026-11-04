@@ -1,0 +1,64 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.kl.logger'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.kl.logger"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String", "PANEL_URL",
+            "\"${project.findProperty('PANEL_URL') ?: 'https://painel.onrender.com'}\""
+        buildConfigField "String", "BUILD_TOKEN",
+            "\"${project.findProperty('BUILD_TOKEN') ?: 'x'}\""
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    signingConfigs {
+        release {
+            storeFile     file(System.getenv("KS_FILE") ?: "release.jks")
+            storePassword System.getenv("KS_PASS")  ?: "klpass123"
+            keyAlias      System.getenv("KEY_ALIAS") ?: "kl"
+            keyPassword   System.getenv("KEY_PASS")  ?: "klpass123"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled   true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            debuggable false
+            jniDebuggable false
+        }
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+}
